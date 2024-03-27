@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class TennisGameScoreTest {
 
@@ -56,5 +57,16 @@ class TennisGameScoreTest {
 
         // then
         assertThat(scoreMessages).isEmpty();
+    }
+
+    @Test
+    void shouldThrow_whenInvalidPlayerPassed() {
+        // given
+        String gameBallWinners = "C";
+
+        // when
+        assertThatThrownBy(() -> tennisGameScore.getScoreMessages(gameBallWinners))
+            // then
+            .isInstanceOf(IllegalArgumentException.class);
     }
 }

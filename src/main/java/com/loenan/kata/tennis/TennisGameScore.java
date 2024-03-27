@@ -21,8 +21,10 @@ public class TennisGameScore {
         }
         if (gameBallWinners.startsWith("A")) {
             return List.of("Player A : 15 / Player B : 0");
-        } else {
+        } else if (gameBallWinners.startsWith("B")) {
             return List.of("Player A : 0 / Player B : 15");
+        } else {
+            throw new IllegalArgumentException("Invalid player");
         }
     }
 }
