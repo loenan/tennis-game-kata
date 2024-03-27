@@ -1,0 +1,30 @@
+*/bin/*
+bin/
+
+*.class
+
+# Package Files
+*.jar
+
+# Eclipse
+.settings/
+*.project
+*.classpath
+.prefs
+*.prefs
+.metadata/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+out/
+
+# VSCode
+.vscode/
+
+# Mac
+.DS_Store
+
+# Maven
+target/
