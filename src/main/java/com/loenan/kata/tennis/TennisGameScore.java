@@ -1,12 +1,14 @@
 package com.loenan.kata.tennis;
 
-import org.apache.commons.lang3.StringUtils;
-
+import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.Collections.emptyList;
+import java.util.Optional;
 
 public class TennisGameScore {
+
+    private static final int[] POINTS_BY_WON_BALLS = {
+        0, 15, 30, 40
+    };
 
     /**
      * Build the score messages to display for each ball in a game.
@@ -16,15 +18,33 @@ public class TennisGameScore {
      * @return the list of score message to display, one for each ball
      */
     public List<String> getScoreMessages(String gameBallWinners) {
-        if (StringUtils.isEmpty(gameBallWinners)) {
-            return emptyList();
+        int ballsWonByA = 0;
+        int ballsWonByB = 0;
+        List<String> scoreMessages = new ArrayList<>();
+        int ballCount = Optional.ofNullable(gameBallWinners)
+            .map(String::length)
+            .orElse(0);
+        for (int i = 0; i < ballCount; i++) {
+            char ballWinner = gameBallWinners.charAt(i);
+            switch (ballWinner) {
+                case 'A':
+                    ballsWonByA++;
+                    break;
+                case 'B':
+                    ballsWonByB++;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid player: " + ballWinner);
+            }
+
+            String newScoreMessage = String.format("Player A : %d / Player B : %d",
+                POINTS_BY_WON_BALLS[ballsWonByA],
+                POINTS_BY_WON_BALLS[ballsWonByB]
+            );
+
+            scoreMessages.add(newScoreMessage);
         }
-        if (gameBallWinners.startsWith("A")) {
-            return List.of("Player A : 15 / Player B : 0");
-        } else if (gameBallWinners.startsWith("B")) {
-            return List.of("Player A : 0 / Player B : 15");
-        } else {
-            throw new IllegalArgumentException("Invalid player");
-        }
+
+        return scoreMessages;
     }
 }

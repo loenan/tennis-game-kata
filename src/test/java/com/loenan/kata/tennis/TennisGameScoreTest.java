@@ -69,4 +69,19 @@ class TennisGameScoreTest {
             // then
             .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @Test
+    void shouldReturn15vs15Message_whenAWinBallThenBWinBall() {
+        // given
+        String gameBallWinners = "AB";
+
+        // when
+        List<String> scoreMessages = tennisGameScore.getScoreMessages(gameBallWinners);
+
+        // then
+        assertThat(scoreMessages).containsExactly(
+            "Player A : 15 / Player B : 0",
+            "Player A : 15 / Player B : 15"
+        );
+    }
 }
