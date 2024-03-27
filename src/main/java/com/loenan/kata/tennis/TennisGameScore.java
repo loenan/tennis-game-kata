@@ -2,13 +2,19 @@ package com.loenan.kata.tennis;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+
+import static java.util.stream.Collectors.joining;
 
 public class TennisGameScore {
 
     private static final int[] POINTS_BY_WON_BALLS = {
         0, 15, 30, 40
     };
+
+    private static final char PLAYER_A_IDENTIFIER = 'A';
+    private static final char PLAYER_B_IDENTIFIER = 'B';
 
     /**
      * Build the score messages to display for each ball in a game.
@@ -18,29 +24,24 @@ public class TennisGameScore {
      * @return the list of score message to display, one for each ball
      */
     public List<String> getScoreMessages(String gameBallWinners) {
-        int ballsWonByA = 0;
-        int ballsWonByB = 0;
+        List<Player> players = List.of(new Player(PLAYER_A_IDENTIFIER), new Player(PLAYER_B_IDENTIFIER));
         List<String> scoreMessages = new ArrayList<>();
         int ballCount = Optional.ofNullable(gameBallWinners)
             .map(String::length)
             .orElse(0);
         for (int i = 0; i < ballCount; i++) {
-            char ballWinner = gameBallWinners.charAt(i);
-            switch (ballWinner) {
-                case 'A':
-                    ballsWonByA++;
-                    break;
-                case 'B':
-                    ballsWonByB++;
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid player: " + ballWinner);
-            }
+            char ballWinnerIdentifier = gameBallWinners.charAt(i);
+            Player ballWinner = players.stream()
+                .filter(player -> Objects.equals(player.getIdentifier(), ballWinnerIdentifier))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Invalid player: " + ballWinnerIdentifier));
+            ballWinner.incrementWonBalls();
 
-            String newScoreMessage = String.format("Player A : %d / Player B : %d",
-                POINTS_BY_WON_BALLS[ballsWonByA],
-                POINTS_BY_WON_BALLS[ballsWonByB]
-            );
+            String newScoreMessage = players.stream()
+                .map(player -> String.format("Player %s : %d",
+                    player.getIdentifier(),
+                    POINTS_BY_WON_BALLS[player.getWonBalls()]))
+                .collect(joining(" / "));
 
             scoreMessages.add(newScoreMessage);
         }
