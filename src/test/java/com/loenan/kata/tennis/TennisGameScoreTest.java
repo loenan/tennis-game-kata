@@ -21,4 +21,40 @@ class TennisGameScoreTest {
         // then
         assertThat(scoreMessages).containsExactly("Player A : 15 / Player B : 0");
     }
+
+    @Test
+    void shouldReturn0vs15Message_whenPlayerBWinFirstBall() {
+        // given
+        String gameBallWinners = "B";
+
+        // when
+        List<String> scoreMessages = tennisGameScore.getScoreMessages(gameBallWinners);
+
+        // then
+        assertThat(scoreMessages).containsExactly("Player A : 0 / Player B : 15");
+    }
+
+    @Test
+    void shouldReturnNoMessage_whenNoBallPlayed() {
+        // given
+        String gameBallWinners = "";
+
+        // when
+        List<String> scoreMessages = tennisGameScore.getScoreMessages(gameBallWinners);
+
+        // then
+        assertThat(scoreMessages).isEmpty();
+    }
+
+    @Test
+    void shouldReturnNoMessage_whenNullPassed() {
+        // given
+        String gameBallWinners = null;
+
+        // when
+        List<String> scoreMessages = tennisGameScore.getScoreMessages(gameBallWinners);
+
+        // then
+        assertThat(scoreMessages).isEmpty();
+    }
 }

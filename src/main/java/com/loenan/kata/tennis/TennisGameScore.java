@@ -1,6 +1,10 @@
 package com.loenan.kata.tennis;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 public class TennisGameScore {
 
@@ -12,6 +16,13 @@ public class TennisGameScore {
      * @return the list of score message to display, one for each ball
      */
     public List<String> getScoreMessages(String gameBallWinners) {
-        return List.of("Player A : 15 / Player B : 0");
+        if (StringUtils.isEmpty(gameBallWinners)) {
+            return emptyList();
+        }
+        if (gameBallWinners.startsWith("A")) {
+            return List.of("Player A : 15 / Player B : 0");
+        } else {
+            return List.of("Player A : 0 / Player B : 15");
+        }
     }
 }
