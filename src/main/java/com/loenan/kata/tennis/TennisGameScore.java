@@ -9,10 +9,6 @@ import static java.util.stream.Collectors.joining;
 
 public class TennisGameScore {
 
-    private static final int[] POINTS_BY_WON_BALLS = {
-        0, 15, 30, 40
-    };
-
     private static final char PLAYER_A_IDENTIFIER = 'A';
     private static final char PLAYER_B_IDENTIFIER = 'B';
 
@@ -38,9 +34,7 @@ public class TennisGameScore {
             ballWinner.incrementWonBalls();
 
             String newScoreMessage = players.stream()
-                .map(player -> String.format("Player %s : %d",
-                    player.getIdentifier(),
-                    POINTS_BY_WON_BALLS[player.getWonBalls()]))
+                .map(Player::getSimpleScoreMessage)
                 .collect(joining(" / "));
 
             scoreMessages.add(newScoreMessage);
