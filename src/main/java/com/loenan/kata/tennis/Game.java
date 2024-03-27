@@ -22,8 +22,17 @@ public class Game {
     }
 
     public String getCurrentScoreMessage() {
+        if (isDeuce()) {
+            return "Deuce";
+        }
+
         return players.stream()
             .map(Player::getSimpleScoreMessage)
             .collect(joining(" / "));
+    }
+
+    private boolean isDeuce() {
+        return players.stream().allMatch(Player::isScore40Reached)
+            && players.get(0).getWonBalls() == players.get(1).getWonBalls();
     }
 }

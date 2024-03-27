@@ -6,6 +6,8 @@ public class Player {
         0, 15, 30, 40
     };
 
+    private static final int MINIMUM_WON_BALLS_TO_REACH_SCORE_40 = 3;
+
     private final char identifier;
     private int wonBalls;
 
@@ -23,6 +25,10 @@ public class Player {
 
     public void incrementWonBalls() {
         wonBalls++;
+    }
+
+    public boolean isScore40Reached() {
+        return wonBalls >= MINIMUM_WON_BALLS_TO_REACH_SCORE_40;
     }
 
     public String getSimpleScoreMessage() {
