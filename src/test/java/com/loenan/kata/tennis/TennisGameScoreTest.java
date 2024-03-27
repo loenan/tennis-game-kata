@@ -75,6 +75,27 @@ class TennisGameScoreTest {
                 "Player A : 30 / Player B : 30",
                 "Player A : 40 / Player B : 30",
                 "Player A wins the game"
+            )),
+            arguments("ABABABA", List.of(
+                "Player A : 15 / Player B : 0",
+                "Player A : 15 / Player B : 15",
+                "Player A : 30 / Player B : 15",
+                "Player A : 30 / Player B : 30",
+                "Player A : 40 / Player B : 30",
+                "Deuce",
+                "Advantage player A"
+            )),
+            arguments("ABABABABBB", List.of(
+                "Player A : 15 / Player B : 0",
+                "Player A : 15 / Player B : 15",
+                "Player A : 30 / Player B : 15",
+                "Player A : 30 / Player B : 30",
+                "Player A : 40 / Player B : 30",
+                "Deuce",
+                "Advantage player A",
+                "Deuce",
+                "Advantage player B",
+                "Player B wins the game"
             ))
         );
     }

@@ -8,6 +8,7 @@
     <properties>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <junit-jupiter-api.version>5.10.0</junit-jupiter-api.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
         <dependency>

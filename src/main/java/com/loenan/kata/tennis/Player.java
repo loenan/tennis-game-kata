@@ -32,9 +32,8 @@ public class Player {
         return wonBalls >= MINIMUM_WON_BALLS_TO_REACH_SCORE_40;
     }
 
-    public boolean winAgainst(Player otherPlayer) {
-        return wonBalls >= MINIMUM_WON_BALLS_TO_WIN_GAME
-            && wonBalls >= otherPlayer.wonBalls + 2;
+    public boolean isScoreToWinGameReached() {
+        return wonBalls >= MINIMUM_WON_BALLS_TO_WIN_GAME;
     }
 
     public String getSimpleScoreMessage() {
@@ -42,6 +41,10 @@ public class Player {
             identifier,
             getScorePoints()
         );
+    }
+
+    public String getAdvantageMessage() {
+        return String.format("Advantage player %s", identifier);
     }
 
     public String getWinGameMessage() {

@@ -1,5 +1,6 @@
 package com.loenan.kata.tennis;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -7,6 +8,10 @@ import java.util.Optional;
 import static java.util.stream.Collectors.joining;
 
 public class Game {
+
+    private static final Comparator<Player> PLAYER_COMPARATOR =
+        Comparator.comparing(Player::getWonBalls)
+            .thenComparing(Player::getIdentifier);  // to make sure to distinguish the players if won balls are equal
 
     private final List<Player> players;
 
@@ -23,13 +28,26 @@ public class Game {
     }
 
     public String getCurrentScoreMessage() {
-        if (isDeuce()) {
-            return "Deuce";
+        if (isScore40ReachedByBothPlayers()) {
+            Player leadingPlayer = players.stream().max(PLAYER_COMPARATOR)
+                .orElseThrow();  // should never throw, the stream is never empty
+            Player ledPlayer = players.stream().min(PLAYER_COMPARATOR)
+                .orElseThrow();  // should never throw, the stream is never empty
+
+            int wonBallDifference = leadingPlayer.getWonBalls() - ledPlayer.getWonBalls();
+            return switch (wonBallDifference) {
+                case 0 -> "Deuce";
+                case 1 -> leadingPlayer.getAdvantageMessage();
+                default -> leadingPlayer.getWinGameMessage();
+            };
         }
 
-        Optional<Player> gameWinner = getGameWinner();
-        if (gameWinner.isPresent()) {
-            return gameWinner.get().getWinGameMessage();
+        // case where a player win the game, but the other player didn't reach score 40
+        Optional<Player> winnerPlayer = players.stream()
+            .filter(Player::isScoreToWinGameReached)
+            .findFirst();
+        if (winnerPlayer.isPresent()) {
+            return winnerPlayer.get().getWinGameMessage();
         }
 
         return players.stream()
@@ -37,20 +55,7 @@ public class Game {
             .collect(joining(" / "));
     }
 
-    private Optional<Player> getGameWinner() {
-        Player player1 = players.get(0);
-        Player player2 = players.get(1);
-        if (player1.winAgainst(player2)) {
-            return Optional.of(player1);
-        }
-        if (player2.winAgainst(player1)) {
-            return Optional.of(player2);
-        }
-        return Optional.empty();
-    }
-
-    private boolean isDeuce() {
-        return players.stream().allMatch(Player::isScore40Reached)
-            && players.get(0).getWonBalls() == players.get(1).getWonBalls();
+    private boolean isScore40ReachedByBothPlayers() {
+        return players.stream().allMatch(Player::isScore40Reached);
     }
 }
